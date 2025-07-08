@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sander Edvardsen - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        /* Header Strip */
+        .header-strip {
+            background: rgba(12, 12, 12, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #64ffda;
+        }
+
+        .header-info {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .social-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #64ffda;
+        }
+
+        .contact-info {
+            color: #cccccc;
+            font-size: 0.9rem;
+        }
+
+        /* Carousel Banner */
+        .carousel-banner {
+            position: relative;
+            width: 100%;
+            height: 70vh;
+            overflow: hidden;
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel-slide {
+            display: none;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .carousel-slide.active {
+            display: block;
+        }
+
+        .carousel-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .slide-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 3rem 2rem 2rem;
+            z-index: 2;
+        }
+
+        .slide-content h2 {
+            font-size: 2.5rem;
+            color: #64ffda;
+            margin-bottom: 1rem;
+        }
+
+        .slide-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #ffffff;
+            max-width: 600px;
+        }
+
+        .slide-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .slide-btn {
+            padding: 0.8rem 2rem;
+            background: rgba(100, 255, 218, 0.1);
+            color: #64ffda;
+            text-decoration: none;
+            border-radius: 5px;
+            border: 2px solid #64ffda;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .slide-btn:hover {
+            background: #64ffda;
+            color: #0c0c0c;
+            transform: translateY(-2px);
+        }
+
+        .slide-btn.primary {
+            background: #64ffda;
+            color: #0c0c0c;
+        }
+
+        .slide-btn.primary:hover {
+            background: rgba(100, 255, 218, 0.8);
+        }
+
+        /* Carousel Navigation */
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: #ffffff;
+            border: none;
+            padding: 1rem;
+            cursor: pointer;
+            font-size: 1.5rem;
+            z-index: 3;
+            transition: background 0.3s ease;
+        }
+
+        .carousel-nav:hover {
+            background: rgba(100, 255, 218, 0.3);
+            color: #64ffda;
+        }
+
+        .carousel-nav.prev {
+            left: 2rem;
+        }
+
+        .carousel-nav.next {
+            right: 2rem;
+        }
+
+        /* Carousel Indicators */
+        .carousel-indicators {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 3;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .indicator.active {
+            background: #64ffda;
+        }
+
+        /* Main Content */
+        main {
+            padding: 2rem 0;
+        }
+
+        section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #64ffda;
+            text-align: center;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            width: 50px;
+            height: 3px;
+            background: #64ffda;
+            transform: translateX(-50%);
+        }
+
+        /* About Me Section */
+        .about-content {
+            font-size: 1.1rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .skill-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .skill-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(100, 255, 218, 0.3);
+        }
+
+        .skill-item img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 1rem;
+            filter: brightness(0.8);
+            transition: filter 0.3s ease;
+        }
+
+        .skill-item:hover img {
+            filter: brightness(1);
+        }
+
+        .skill-item h3 {
+            color: #64ffda;
+            font-size: 1rem;
+        }
+
+        /* Contact Section */
+        .contact-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-btn {
+            padding: 1rem 2rem;
+            background: rgba(100, 255, 218, 0.1);
+            color: #64ffda;
+            text-decoration: none;
+            border-radius: 8px;
+            border: 2px solid #64ffda;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .contact-btn:hover {
+            background: #64ffda;
+            color: #0c0c0c;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(100, 255, 218, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(12, 12, 12, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            text-align: center;
+            color: #64ffda;
+            margin-top: 4rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-strip {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .header-info {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .carousel-banner {
+                height: 50vh;
+            }
+
+            .slide-content {
+                padding: 2rem 1rem 1rem;
+            }
+
+            .slide-content h2 {
+                font-size: 1.8rem;
+            }
+
+            .slide-content p {
+                font-size: 1rem;
+            }
+
+            .carousel-nav {
+                padding: 0.5rem;
+                font-size: 1.2rem;
+            }
+
+            .carousel-nav.prev {
+                left: 1rem;
+            }
+
+            .carousel-nav.next {
+                right: 1rem;
+            }
+
+            .slide-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            section {
+                padding: 2rem 1rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .contact-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Strip -->
+    <div class="header-strip">
+        <div class="logo">Sander Edvardsen</div>
+        <div class="header-info">
+            <div class="social-links">
+                <a href="https://linkedin.com/in/sanderedvardsen" target="_blank">LinkedIn</a>
+                <a href="https://github.com/sanderedvardsen" target="_blank">GitHub</a>
+            </div>
+            <div class="contact-info">sander@example.com</div>
+        </div>
+    </div>
+
+    <!-- Carousel Banner -->
+    <div class="carousel-banner">
+        <div class="carousel-container">
+            <!-- Slide 1 -->
+            <div class="carousel-slide active" style="background-image: url('assets/communityscience.png');">
+                <div class="slide-content">
+                    <h2>Community Science Museum</h2>
+                    <p>An interactive science museum website designed specifically for kids as a school project.</p>
+                    <div class="slide-buttons">
+                        <a href="#" class="slide-btn primary" target="_blank">Live Demo</a>
+                        <a href="#" class="slide-btn" target="_blank">Repository</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="carousel-slide active" style="background-image: url('assets/arravs.png');">
+                <div class="slide-content">
+                    <h2>Arravs Blog</h2>
+                    <p>A dynamic blog platform created for Arrav as a school project.</p>
+                    <div class="slide-buttons">
+                        <a href="https://nimble-sprinkles-fe8720.netlify.app" class="slide-btn primary" target="_blank">Live Demo</a>
+                        <a href="https://github.com/NoroffFEU/FED1-PE1-sanderedvardsen" class="slide-btn" target="_blank">Repository</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="carousel-slide active" style="background-image: url('assets/rainydays.png');">
+                <div class="slide-content">
+                    <h2>Rainy Days</h2>
+                    <p>An e-commerce website specializing in rain jackets developed as a school project.</p>
+                    <div class="slide-buttons">
+                        <a href="#" class="slide-btn primary" target="_blank">Live Demo</a>
+                        <a href="#" class="slide-btn" target="_blank">Repository</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Arrows -->
+        <button class="carousel-nav prev" onclick="changeSlide(-1)">❮</button>
+        <button class="carousel-nav next" onclick="changeSlide(1)">❯</button>
+
+        <!-- Indicators -->
+        <div class="carousel-indicators">
+            <div class="indicator active" onclick="currentSlide(1)"></div>
+            <div class="indicator" onclick="currentSlide(2)"></div>
+            <div class="indicator" onclick="currentSlide(3)"></div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <section id="about">
+            <h2>About Me</h2>
+            <div class="about-content">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vitae nisl sit amet erat venenatis malesuada. Aenean et porttitor lacus. Nulla feugiat nunc fringilla, fermentum velit at, tempor erat. Nulla viverra auctor consectetur. Quisque convallis, magna vehicula gravida euismod, quam tortor faucibus sapien, nec consequat mi sapien quis enim. Nunc porttitor neque in tortor dapibus, eu tincidunt erat fermentum.</p>
+            </div>
+        </section>
+
+        <section id="skills">
+            <h2>Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-item">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="VS Code">
+                    <h3>VS Code</h3>
+                </div>
+                <div class="skill-item">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript">
+                    <h3>JavaScript</h3>
+                </div>
+                <div class="skill-item">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub">
+                    <h3>GitHub</h3>
+                </div>
+                <div class="skill-item">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML">
+                    <h3>HTML</h3>
+                </div>
+                <div class="skill-item">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS">
+                    <h3>CSS</h3>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Contact</h2>
+            <div class="contact-buttons">
+                <a href="https://github.com/sanderedvardsen" target="_blank" class="contact-btn">GitHub</a>
+                <a href="https://linkedin.com/in/sanderedvardsen" target="_blank" class="contact-btn">LinkedIn</a>
+                <a href="mailto:sedvardsen4@gmail.com" class="contact-btn">Email</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Sander Edvardsen © 2025</p>
+    </footer>
+
+    <script>
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const indicators = document.querySelectorAll('.indicator');
+
+        function showSlide(index) {
+            // Hide all slides
+            slides.forEach(slide => slide.classList.remove('active'));
+            indicators.forEach(indicator => indicator.classList.remove('active'));
+
+            // Show current slide
+            slides[index].classList.add('active');
+            indicators[index].classList.add('active');
+        }
+
+        function changeSlide(direction) {
+            currentSlideIndex += direction;
+            
+            if (currentSlideIndex >= slides.length) {
+                currentSlideIndex = 0;
+            } else if (currentSlideIndex < 0) {
+                currentSlideIndex = slides.length - 1;
+            }
+            
+            showSlide(currentSlideIndex);
+        }
+
+        function currentSlide(index) {
+            currentSlideIndex = index - 1;
+            showSlide(currentSlideIndex);
+        }
+
+        // Auto-play carousel (optional)
+        setInterval(() => {
+            changeSlide(1);
+        }, 5000);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+    </script>
+</body>
+</html>

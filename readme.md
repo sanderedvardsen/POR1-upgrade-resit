@@ -1,6 +1,6 @@
 # Sander Edvardsen - Portfolio
 
-![Portfolio Banner](assets/communityscience.png)
+![Portfolio Banner](assets/portfolio1.png)
 
 A personal portfolio website showcasing my frontend development projects, skills, and contact information.
 
